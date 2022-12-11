@@ -1,0 +1,22 @@
+version: '3'
+services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "mirea"
+      POSTGRES_USER: "mirea"
+      POSTGRES_PASSWORD: "mirea"
+    volumes:
+      - ./init/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+  golang_stat:
+    build:
+      context: ./go_conteiners/tests_go
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - database
